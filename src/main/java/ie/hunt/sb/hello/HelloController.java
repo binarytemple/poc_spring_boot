@@ -12,4 +12,12 @@ public class HelloController {
         return "Greetings from Spring Boot!";
     }
 
+
+    @GetMapping("/{{name}}")
+    public String greet(String name) {
+        //TODO: broken .. how do we map path params
+        //TODO: broken .. no test cases .. how do we write a test-case??
+        return "Greetings from Spring Boot:" + name;
+    }
+
 }
