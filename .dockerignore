@@ -1,0 +1,15 @@
+.git
+.github
+.gitignore
+.gradle
+.idea
+.tool-versions
+Dockerfile
+HELP.md
+README.md
+build
+gradle
+gradlew
+gradlew.bat
+poc_spring_boot.iml
+Makefile
