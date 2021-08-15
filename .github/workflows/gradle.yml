@@ -21,7 +21,7 @@ jobs:
         run: ./gradlew test bootJar
   verify-build:
     runs-on: ubuntu-latest
-    if: ${{ github.ref != 'refs/heads/master' }}
+    if: ${{ github.ref != 'refs/heads/main' }}
     needs:
       - test
     steps:
@@ -39,7 +39,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       IMAGE_ID: ghcr.io/binarytemple/poc_spring_boot:${{ github.sha }}
-    if: ${{ github.ref == 'refs/heads/master' }}
+    if: ${{ github.ref == 'refs/heads/main' }}
     needs:
       - verify-build
     steps:
