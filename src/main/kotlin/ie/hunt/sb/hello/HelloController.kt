@@ -6,13 +6,12 @@ import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-class HelloController {
+class HelloController(var config: IConfig) {
+
     @GetMapping("/", produces = ["text/plain"])
     @ResponseBody
     fun index(): String {
-        return "Hello World" +
-                "\nSupported endpoints: " +
-                "\n/hello/{name}"
+        return "Hello World" + "\nSupported endpoints: " + "\n/hello/{name}"
     }
 
     /**
@@ -23,5 +22,13 @@ class HelloController {
     @ResponseBody
     fun greet(@PathVariable("name") name: String): String {
         return "Hello $name"
+    }
+
+
+    @GetMapping("/git_sha", produces = ["text/plain"])
+    @ResponseBody
+    fun version () : String {
+        return GVersion.GIT_SHA
+
     }
 }
