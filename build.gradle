@@ -2,6 +2,8 @@ plugins {
 	id 'org.springframework.boot' version '2.5.3'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
+	id 'org.jetbrains.kotlin.jvm' version '1.5.30-RC'
+	id "com.peterabeles.gversion" version "1.2.4"
 //	id 'org.springframework.experimental.aot' version '0.10.2-SNAPSHOT'
 // 	id 'org.graalvm.buildtools.native' version '0.9.1'
 }
@@ -22,6 +24,7 @@ dependencies {
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'io.projectreactor:reactor-test'
+	implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
 }
 
 test {
@@ -32,3 +35,28 @@ bootBuildImage {
 	builder = 'paketobuildpacks/builder:tiny'
 //	environment = ['BP_NATIVE_IMAGE': 'true']
 }
+
+
+
+compileKotlin {
+	kotlinOptions {
+		jvmTarget = "16"
+	}
+}
+//		compileKotlin.dependsOn(compileJava)
+
+compileTestKotlin {
+	kotlinOptions {
+		jvmTarget = "16"
+	}
+}
+
+gversion {
+	srcDir = "src/main/java/"
+	classPackage = "ie.hunt.sb.hello"
+//	className = "MyVersion"                   // optional. If not specified GVersion is used
+//	dateFormat   = "yyyy-MM-dd'T'HH:mm:ss'Z'" // optional. This is the default
+//	timeZone     = "UTC"                      // optional. UTC is default
+}
+
+project.compileKotlin.dependsOn(createVersionFile)
