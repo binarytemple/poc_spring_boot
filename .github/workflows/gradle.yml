@@ -33,42 +33,42 @@ jobs:
          run: |
            eval "$(ssh-agent -s)"
            DOCKER_BUILDKIT=1 docker build -t .
-   bump-version-and-deploy:
-     runs-on: ubuntu-latest
-     env: 
-      IMAGE_ID: ghcr.io/binarytemple/poc_spring_boot:${{ github.sha }}
-     if: ${{ github.ref == 'refs/heads/master' }}
-     needs:
-       - verify-build
-     steps:
-       - uses: actions/checkout@v2
-       - name: Bump version and push tag
-         id: tag_version
-         uses: mathieudutour/github-tag-action@v5.5
-         with:
-           github_token: ${{ secrets.GITHUB_TOKEN }}
-       - name: Create a GitHub release
-         uses: actions/create-release@v1
-         env:
-           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-         with:
-           tag_name: ${{ steps.tag_version.outputs.new_tag }}
-           release_name: Release ${{ steps.tag_version.outputs.new_tag }}
-           body: ${{ steps.tag_version.outputs.changelog }}
-       - name: Build docker image
-         shell: bash
-         env:
-           RELEASE_VERSION: ${{ steps.tag_version.outputs.new_tag }}
-#           DEPLOY_KEY: ${{ secrets.ESL_DEPLOY_KEY }}
-           GIT_SSH_COMMAND: "ssh -o StrictHostKeyChecking=no"
-           SHA: ${{ github.sha }}
-         run: |
-            eval "$(ssh-agent -s)"
-            DOCKER_BUILDKIT=1 docker build -t ${{ IMAGE_ID }} . 
-       - name: Publish docker image to GHCR
-         shell: bash
-         env:
-           RELEASE_VERSION: ${{ steps.tag_version.outputs.new_tag }}
-         run: |
-           docker push ${{ IMAGE_ID }}
+#    bump-version-and-deploy:
+#      runs-on: ubuntu-latest
+#      env: 
+#       IMAGE_ID: ghcr.io/binarytemple/poc_spring_boot:${{ github.sha }}
+#      if: ${{ github.ref == 'refs/heads/master' }}
+#      needs:
+#        - verify-build
+#      steps:
+#        - uses: actions/checkout@v2
+#        - name: Bump version and push tag
+#          id: tag_version
+#          uses: mathieudutour/github-tag-action@v5.5
+#          with:
+#            github_token: ${{ secrets.GITHUB_TOKEN }}
+#        - name: Create a GitHub release
+#          uses: actions/create-release@v1
+#          env:
+#            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#          with:
+#            tag_name: ${{ steps.tag_version.outputs.new_tag }}
+#            release_name: Release ${{ steps.tag_version.outputs.new_tag }}
+#            body: ${{ steps.tag_version.outputs.changelog }}
+#        - name: Build docker image
+#          shell: bash
+#          env:
+#            RELEASE_VERSION: ${{ steps.tag_version.outputs.new_tag }}
+# #           DEPLOY_KEY: ${{ secrets.ESL_DEPLOY_KEY }}
+#            GIT_SSH_COMMAND: "ssh -o StrictHostKeyChecking=no"
+#            SHA: ${{ github.sha }}
+#          run: |
+#             eval "$(ssh-agent -s)"
+#             DOCKER_BUILDKIT=1 docker build -t ${{ IMAGE_ID }} . 
+#        - name: Publish docker image to GHCR
+#          shell: bash
+#          env:
+#            RELEASE_VERSION: ${{ steps.tag_version.outputs.new_tag }}
+#          run: |
+#            docker push ${{ IMAGE_ID }}
 
