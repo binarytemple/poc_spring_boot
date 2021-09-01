@@ -1,5 +1,9 @@
 # syntax = docker/dockerfile:experimental
+
 FROM gradle:7.1.1-jdk16 AS build
+
+LABEL org.opencontainers.image.source = "https://github.com/bet01/redpanda_ci_image"
+
 WORKDIR  /home/gradle
 COPY --chown=gradle:gradle build.gradle  settings.gradle ./
 
